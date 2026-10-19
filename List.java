@@ -1,6 +1,9 @@
 import java.util.Collection;
+import java.util.Iterator;
 
 public class List<T> implements Collection<T>{
+
+    // Classes
 
     protected class Node<T>{
 
@@ -53,15 +56,226 @@ public class List<T> implements Collection<T>{
 
     }
 
+    protected class Itr implements Iterator<T>{
+
+        private Node current;
+        private List<T> l;
+
+        public Itr(List<T> l){
+
+            this.l = l;
+            this.reset();
+
+        }
+
+        public T next(){
+
+            Object val;
+            val = this.current.getValue();
+
+            current = current.getNext();
+
+            return (T) val;
+
+        }
+
+        public boolean hasNext(){
+
+            return (current != null);
+
+        }
+
+        public void reset(){
+
+            this.current = l.getNode(0);
+
+        }
+
+    }
+
+    // Fields
+
     protected Node<T> head, tail;
     protected int count;
     
+    // Constructor
+
     public List(){
 
         this.head = this.tail = null;
         this.count = 0;
 
     }
+
+    // Collection Methods
+
+    @Override
+    public int size(){
+
+        return this.count;
+
+    }
+
+    @Override
+    public boolean isEmpty(){
+
+        return (this.count == 0);
+
+    }
+
+    @Override
+    public void clear(){
+
+        this.head = this.tail = null;
+        this.count = 0;
+
+    }
+
+    @Override
+    public boolean contains(Object value){
+
+        for (T elem : this){
+            if (elem.equals(value)){
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    @Override
+    public Object[] toArray(){
+        Object[] array = new Object[this.size()];
+
+        for (int i = 0; i < this.size(); i++){
+            array[i] = this.get(i);
+        }
+
+        return array;
+    }
+
+    @Override
+    public Object[] toArray(Object[] array){
+
+        if (array.length < this.size()){
+            array = new Object[this.size()];
+        }
+
+        array = this.toArray();
+        return array;
+
+    }
+
+    @Override
+    public boolean retainAll(Collection l2){
+
+        boolean result = false;
+
+        for (Object o : this){
+
+            if (!l2.contains(o)){
+
+                this.remove((T) o);
+                result = true;
+
+            }
+
+        }
+
+        return result;
+
+    }
+
+    @Override
+    public boolean removeAll(Collection l2){
+
+        boolean result = false;
+
+        for (Object o : l2){
+
+            if (this.contains((T) o)){
+                this.remove((T) o);
+                result = true;
+            }
+
+        }
+
+        return result;
+
+    }
+
+    @Override
+    public boolean remove(Object elem){
+
+        boolean result = false;
+
+        for (int i = 0; i < this.size(); i++){
+            if (this.get(i).equals(elem)){
+                this.remove(i);
+                result = true;
+            }
+        }
+
+        return result;
+
+    }
+
+    @Override
+    public boolean add(T value){
+
+        if (this.isEmpty()){
+            this.head = this.tail = new Node(null, value, null);
+            this.count++;
+        } else {
+            Node<T> last = this.getNode(this.size() - 1);
+            Node<T> added = new Node(last, value, null);
+            last.setNext(added);
+            this.tail = added;
+            this.count++;
+        }
+
+        return true;
+
+    }
+
+    @Override
+    public boolean addAll(Collection c){
+
+        boolean result = false;
+
+        for (Object elem : c) {
+
+            this.add((T) elem);
+            result = true;
+            
+        }
+
+        return result;
+
+    }
+
+    @Override
+    public boolean containsAll(Collection col){
+
+        boolean result = true;
+
+        for (Object elem : col) {
+            result = result && this.contains((T) elem);
+        }
+
+        return result;
+
+    }
+
+    @Override
+    public Iterator<T> iterator(){
+
+        return new Itr(this);
+        
+    }
+
+    // Protected Methods
 
     protected Node<T> getNode(int index){
 
@@ -81,46 +295,7 @@ public class List<T> implements Collection<T>{
 
     }
 
-    public int size(){
-
-        return this.count;
-
-    }
-
-    public boolean isEmpty(){
-
-        return (this.count == 0);
-
-    }
-
-    public void clear(){
-
-        this.head = this.tail = null;
-        this.count = 0;
-
-    }
-
-    public boolean contains(Object value){
-
-        for (T elem : this){
-            if (elem.equals(value)){
-                return true;
-            }
-        }
-
-        return false;
-
-    }
-
-    public Object[] toArray(){
-        Object[] array = new Object[this.size()];
-
-        for (int i = 0; i < this.size(); i++){
-            array[i] = this.get(i);
-        }
-
-        return array;
-    }
+    // Public Methods
 
     public T get(int index){
 
@@ -177,36 +352,6 @@ public class List<T> implements Collection<T>{
 
     }
 
-    public boolean remove(Object elem){
-
-        for (int i = 0; i < this.size(); i++){
-            if (this.get(i).equals(elem)){
-                this.remove(i);
-                return true;
-            }
-        }
-
-        return false;
-
-    }
-
-    public boolean add(T value){
-
-        if (this.isEmpty()){
-            this.head = this.tail = new Node<T>(null, value, null);
-            this.count++;
-        } else {
-            Node<T> last = this.getNode(this.size() - 1);
-            Node<T> added = new Node<T>(last, value, null);
-            last.setNext(added);
-            this.tail = added;
-            this.count++;
-        }
-
-        return true;
-
-    }
-
     public boolean add(int index, T value){
 
         if (this.isEmpty() && index == 0){
@@ -215,7 +360,7 @@ public class List<T> implements Collection<T>{
             throw new ArrayIndexOutOfBoundsException("Index " + index + " out of bounds for range " + this.size());
         } else if (index == 0){
             Node<T> target = getNode(index);
-            Node<T> added = new Node<T>(null, value, target);
+            Node<T> added = new Node(null, value, target);
 
             this.head = added;
             target.setPrevious(added);
@@ -224,7 +369,7 @@ public class List<T> implements Collection<T>{
         } else {
             Node<T> target = getNode(index);
             Node<T> previous = target.getPrevious();
-            Node<T> added = new Node<T>(previous, value, target);
+            Node<T> added = new Node(previous, value, target);
 
             previous.setNext(added);
             target.setPrevious(added);
@@ -234,5 +379,6 @@ public class List<T> implements Collection<T>{
 
         return true;
 
-    }
+    } 
+
 }
