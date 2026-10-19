@@ -1,9 +1,5 @@
 public class Deck<T> extends List<T> {
 
-    public Deck(){
-
-    }
-
     public void addFirst(){
 
     }
