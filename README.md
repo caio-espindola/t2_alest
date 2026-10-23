@@ -2,7 +2,5 @@
 
 To Do:
 
- - Implement Deck.java
- - Create Main class
- - Add favorites, history, undo and redo lists to Main
- - Create NL parser and Shell in Main
+ - Implement operation methods in Main
+ - Input validation in Main

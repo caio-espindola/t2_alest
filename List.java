@@ -7,8 +7,8 @@ public class List<T extends Object> implements Collection<T>{
 
     protected class Node<E extends Object>{
 
-        protected E value;
-        protected Node<E> next, previous;
+        private E value;
+        private Node<E> next, previous;
 
         public Node(Node<E> prev, E value, Node<E> next){
 
@@ -68,6 +68,7 @@ public class List<T extends Object> implements Collection<T>{
 
         }
 
+        @Override
         public T next(){
 
             Object val;
@@ -79,6 +80,7 @@ public class List<T extends Object> implements Collection<T>{
 
         }
 
+        @Override
         public boolean hasNext(){
 
             return (current != null);
