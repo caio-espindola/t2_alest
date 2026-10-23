@@ -1,16 +1,16 @@
 import java.util.Collection;
 import java.util.Iterator;
 
-public class List<T> implements Collection<T>{
+public class List<T extends Object> implements Collection<T>{
 
     // Classes
 
-    protected class Node<T>{
+    protected class Node<E extends Object>{
 
-        protected T value;
-        protected Node<T> next, previous;
+        protected E value;
+        protected Node<E> next, previous;
 
-        public Node(Node<T> prev, T value, Node<T> next){
+        public Node(Node<E> prev, E value, Node<E> next){
 
             this.previous = prev;
             this.value = value;
@@ -18,37 +18,37 @@ public class List<T> implements Collection<T>{
 
         }
 
-        public T getValue(){
+        public E getValue(){
 
             return this.value;
 
         }
 
-        public Node<T> getNext(){
+        public Node<E> getNext(){
 
             return this.next;
 
         }
 
-        public Node<T> getPrevious(){
+        public Node<E> getPrevious(){
 
             return this.previous;
 
         }
 
-        public void setValue(T value){
+        public void setValue(E value){
 
             this.value = value;
 
         }
 
-        public void setNext(Node<T> n){
+        public void setNext(Node<E> n){
 
             this.next = n;
 
         }
 
-        public void setPrevious(Node<T> n){
+        public void setPrevious(Node<E> n){
 
             this.previous = n;
 
@@ -58,7 +58,7 @@ public class List<T> implements Collection<T>{
 
     protected class Itr implements Iterator<T>{
 
-        private Node current;
+        private Node<T> current;
         private List<T> l;
 
         public Itr(List<T> l){
@@ -168,16 +168,15 @@ public class List<T> implements Collection<T>{
     }
 
     @Override
-    public boolean retainAll(Collection l2){
+    public boolean retainAll(Collection<?> l2){
 
-        boolean result = false;
+        boolean result = true;
 
         for (Object o : this){
 
             if (!l2.contains(o)){
 
-                this.remove((T) o);
-                result = true;
+                result = result && this.remove(o);
 
             }
 
@@ -188,14 +187,14 @@ public class List<T> implements Collection<T>{
     }
 
     @Override
-    public boolean removeAll(Collection l2){
+    public boolean removeAll(Collection<?> l2){
 
         boolean result = false;
 
         for (Object o : l2){
 
-            if (this.contains((T) o)){
-                this.remove((T) o);
+            if (this.contains(o)){
+                this.remove(o);
                 result = true;
             }
 
@@ -212,7 +211,7 @@ public class List<T> implements Collection<T>{
 
         for (int i = 0; i < this.size(); i++){
             if (this.get(i).equals(elem)){
-                this.remove(i);
+                this.removeIndex(i);
                 result = true;
             }
         }
@@ -225,11 +224,11 @@ public class List<T> implements Collection<T>{
     public boolean add(T value){
 
         if (this.isEmpty()){
-            this.head = this.tail = new Node(null, value, null);
+            this.head = this.tail = new Node<T>(null, value, null);
             this.count++;
         } else {
             Node<T> last = this.getNode(this.size() - 1);
-            Node<T> added = new Node(last, value, null);
+            Node<T> added = new Node<T>(last, value, null);
             last.setNext(added);
             this.tail = added;
             this.count++;
@@ -240,14 +239,13 @@ public class List<T> implements Collection<T>{
     }
 
     @Override
-    public boolean addAll(Collection c){
+    public boolean addAll(Collection<? extends T> col){
 
-        boolean result = false;
+        boolean result = true;
 
-        for (Object elem : c) {
+        for (T elem : col) {
 
-            this.add((T) elem);
-            result = true;
+            result = result && this.add(elem);
             
         }
 
@@ -256,12 +254,12 @@ public class List<T> implements Collection<T>{
     }
 
     @Override
-    public boolean containsAll(Collection col){
+    public boolean containsAll(Collection<?> col){
 
         boolean result = true;
 
         for (Object elem : col) {
-            result = result && this.contains((T) elem);
+            result = result && this.contains(elem);
         }
 
         return result;
@@ -321,7 +319,7 @@ public class List<T> implements Collection<T>{
 
     }
 
-    public void remove(int index){
+    public void removeIndex(int index){
 
         if (index >= this.size() || index < 0){
 
@@ -355,21 +353,28 @@ public class List<T> implements Collection<T>{
     public boolean add(int index, T value){
 
         if (this.isEmpty() && index == 0){
+
             this.add(value);
+
         } else if ((this.isEmpty() && index != 0) || index >= this.size() || index < 0){
+
             throw new ArrayIndexOutOfBoundsException("Index " + index + " out of bounds for range " + this.size());
+
         } else if (index == 0){
+
             Node<T> target = getNode(index);
-            Node<T> added = new Node(null, value, target);
+            Node<T> added = new Node<T>(null, value, target);
 
             this.head = added;
             target.setPrevious(added);
 
             this.count++;
+
         } else {
+
             Node<T> target = getNode(index);
             Node<T> previous = target.getPrevious();
-            Node<T> added = new Node(previous, value, target);
+            Node<T> added = new Node<T>(previous, value, target);
 
             previous.setNext(added);
             target.setPrevious(added);
