@@ -58,11 +58,19 @@ public class Deck<T> extends List<T> {
 
     public T getFirst(){
 
+        if (this.head == null){
+            throw new NullPointerException("Head node is null for collection " + this);
+        }
+
         return this.head.getValue();
 
     }
 
     public T getLast(){
+
+        if (this.tail == null){
+            throw new NullPointerException("Tail node is null for collection " + this);
+        }
 
         return this.tail.getValue();
         

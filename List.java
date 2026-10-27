@@ -71,6 +71,10 @@ public class List<T extends Object> implements Collection<T>{
         @Override
         public T next(){
 
+            if (current == null){
+                return null;
+            }
+
             Object val;
             val = this.current.getValue();
 
@@ -148,6 +152,10 @@ public class List<T extends Object> implements Collection<T>{
 
     @Override
     public Object[] toArray(){
+        if (this.isEmpty()){
+            return null;
+        }
+
         Object[] array = new Object[this.size()];
 
         for (int i = 0; i < this.size(); i++){
@@ -160,6 +168,10 @@ public class List<T extends Object> implements Collection<T>{
     @Override
     public Object[] toArray(Object[] array){
 
+        if (array == null){
+            return null;
+        }
+
         if (array.length < this.size()){
             array = new Object[this.size()];
         }
@@ -171,6 +183,11 @@ public class List<T extends Object> implements Collection<T>{
 
     @Override
     public boolean retainAll(Collection<?> l2){
+
+        if (l2 == null){
+            this.clear();
+            return false;
+        }
 
         boolean result = true;
 
@@ -190,6 +207,10 @@ public class List<T extends Object> implements Collection<T>{
 
     @Override
     public boolean removeAll(Collection<?> l2){
+
+        if (l2 == null){
+            return false;
+        }
 
         boolean result = false;
 
@@ -243,6 +264,10 @@ public class List<T extends Object> implements Collection<T>{
     @Override
     public boolean addAll(Collection<? extends T> col){
 
+        if (col == null){
+            return false;
+        }
+
         boolean result = true;
 
         for (T elem : col) {
@@ -257,6 +282,10 @@ public class List<T extends Object> implements Collection<T>{
 
     @Override
     public boolean containsAll(Collection<?> col){
+
+        if (col == null){
+            return false;
+        }
 
         boolean result = true;
 
@@ -283,23 +312,48 @@ public class List<T extends Object> implements Collection<T>{
             return null;
         }
 
-        Node<T> current = this.head;
+        if (index <= this.size()/2){
 
-        for (int i = 0; i < index; i++){
+            Node<T> current = this.head;
 
-            current = current.next;
+            for (int i = 0; i < index; i++){
+
+                current = current.getNext();
+
+            }
+
+            return current;
+
+        } else {
+
+            Node<T> current = this.tail;
+
+            for (int i = this.size() - 1; i > index; i--){
+
+                current = current.getPrevious();
+
+            }
+
+            return current;
 
         }
-
-        return current;
-
     }
 
     // Public Methods
 
     public T get(int index){
 
+        if (index < 0 || index >= this.size()){
+            throw new IndexOutOfBoundsException("Index " + index + " out of bounds for range " + this.size());
+        }
+
         Node<T> target = getNode(index);
+
+        if (target == null){
+
+            throw new NullPointerException("Index " + index + " is null in collection " + this);
+
+        }
 
         return target.getValue();
 
@@ -309,11 +363,17 @@ public class List<T extends Object> implements Collection<T>{
 
         if (index >= this.size() || index < 0){
 
-            throw new ArrayIndexOutOfBoundsException("Index " + index + " out of bounds for range " + this.size());
+            throw new IndexOutOfBoundsException("Index " + index + " out of bounds for range " + this.size());
 
         }
 
         Node<T> target = getNode(index);
+
+        if (target == null){
+
+            throw new NullPointerException("Index " + index + " is null in collection " + this);
+
+        }
 
         target.setValue(value);
 
@@ -325,11 +385,17 @@ public class List<T extends Object> implements Collection<T>{
 
         if (index >= this.size() || index < 0){
 
-            throw new ArrayIndexOutOfBoundsException("Index " + index + " out of bounds for range " + this.size());
+            throw new IndexOutOfBoundsException("Index " + index + " out of bounds for range " + this.size());
 
         }
 
         Node<T> target = getNode(index);
+
+        if (target == null){
+
+            throw new NullPointerException("Index " + index + " is null in collection " + this);
+
+        }
 
         if (this.size() == 1){
             this.head = this.tail = null;
@@ -360,7 +426,7 @@ public class List<T extends Object> implements Collection<T>{
 
         } else if ((this.isEmpty() && index != 0) || index >= this.size() || index < 0){
 
-            throw new ArrayIndexOutOfBoundsException("Index " + index + " out of bounds for range " + this.size());
+            throw new IndexOutOfBoundsException("Index " + index + " out of bounds for range " + this.size());
 
         } else if (index == 0){
 
