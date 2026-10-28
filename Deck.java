@@ -1,3 +1,6 @@
+
+import javax.naming.OperationNotSupportedException;
+
 public class Deck<T> extends List<T> {
 
     private int max_size;
@@ -8,23 +11,28 @@ public class Deck<T> extends List<T> {
 
     }
 
-    public T addFirst(T value){
+    @Override
+    public boolean add(int index, T value) throws OperationNotSupportedException{
+        throw new OperationNotSupportedException();
+    }
+
+    public T addFirst(T value) throws OperationNotSupportedException{
 
         if (this.size() == this.max_size){
 
-            this.add(0, value);
+            super.add(0, value);
             return this.removeLast();
 
         } else {
 
-            this.add(0, value);
+            super.add(0, value);
             return null;
 
         }
 
     }
 
-    public T addLast(T value){
+    public T addLast(T value) throws OperationNotSupportedException{
 
         if (this.size() == this.max_size){
 

@@ -1,5 +1,6 @@
 import java.util.Collection;
 import java.util.Iterator;
+import javax.naming.OperationNotSupportedException;
 
 public class List<T extends Object> implements Collection<T>{
 
@@ -418,7 +419,7 @@ public class List<T extends Object> implements Collection<T>{
 
     }
 
-    public boolean add(int index, T value){
+    public boolean add(int index, T value) throws OperationNotSupportedException{
 
         if (this.isEmpty() && index == 0){
 
