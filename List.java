@@ -70,6 +70,9 @@ public class List<T extends Object> implements Collection<T>{
         }
 
         @Override
+        /* Returns the next element in the iteration.
+            @returns The next element in the iteration. Returns null if there are no more elements.
+        */
         public T next(){
 
             if (current == null){
@@ -86,12 +89,17 @@ public class List<T extends Object> implements Collection<T>{
         }
 
         @Override
+        /* Checks whether there is a next element in the collection
+            @returns true or false
+         */
         public boolean hasNext(){
 
             return (current != null);
 
         }
 
+        /* Sets the current element back to the first element in the collection, or to null if there are none.
+         */
         public void reset(){
 
             this.current = l.getNode(0);
@@ -152,6 +160,9 @@ public class List<T extends Object> implements Collection<T>{
     }
 
     @Override
+    /*  Returns an array containing all objects in this collection.
+        @returns an Object array, or null if this collection is empty.
+     */
     public Object[] toArray(){
         if (this.isEmpty()){
             return null;
@@ -167,6 +178,10 @@ public class List<T extends Object> implements Collection<T>{
     }
 
     @Override
+    /* Returns an array containing all objects in this collection, and also writes it to the given array.
+        @param array An object array to be written to.
+        @returns the same array, or a new one if it was not sufficiently big.
+     */
     public Object[] toArray(Object[] array){
 
         if (array == null){
@@ -183,9 +198,13 @@ public class List<T extends Object> implements Collection<T>{
     }
 
     @Override
+    /* Removes from this collection all the elements not present in the given collection
+        @param l2 A collection
+        @returns true if all removals were successful. Also returns false if l2 is null or empty
+     */
     public boolean retainAll(Collection<?> l2){
 
-        if (l2 == null){
+        if (l2 == null || l2.isEmpty()){
             this.clear();
             return false;
         }
@@ -207,6 +226,10 @@ public class List<T extends Object> implements Collection<T>{
     }
 
     @Override
+    /* Removes from this list all elements present in the given collection
+        @param l2 a collection
+        @returns true if any objects were removed. Also returns false if l2 is null or empty.
+     */
     public boolean removeAll(Collection<?> l2){
 
         if (l2 == null){
@@ -229,6 +252,10 @@ public class List<T extends Object> implements Collection<T>{
     }
 
     @Override
+    /* Removes a given object from this collection
+        @param elem An object
+        @returns true if any elements were removed from this collection.
+     */
     public boolean remove(Object elem){
 
         boolean result = false;
@@ -245,6 +272,10 @@ public class List<T extends Object> implements Collection<T>{
     }
 
     @Override
+    /* Appends a value to the end of this collection
+        @param value An object of type T
+        @returns true if the value was added
+     */
     public boolean add(T value){
 
         if (this.isEmpty()){
@@ -263,6 +294,10 @@ public class List<T extends Object> implements Collection<T>{
     }
 
     @Override
+    /* Add all elements from a given collection into this collection
+        @param col A collection
+        @returns true if all additions were succesfull
+     */
     public boolean addAll(Collection<? extends T> col){
 
         if (col == null){
@@ -282,6 +317,10 @@ public class List<T extends Object> implements Collection<T>{
     }
 
     @Override
+    /* Checks if this collection contains all the elements in the given collection
+        @param col A collection
+        @return true if col is a subset of this collection
+     */
     public boolean containsAll(Collection<?> col){
 
         if (col == null){
@@ -299,6 +338,8 @@ public class List<T extends Object> implements Collection<T>{
     }
 
     @Override
+    /* Returns an iterator for this collection
+     */
     public Iterator<T> iterator(){
 
         return new Itr(this);
@@ -307,6 +348,9 @@ public class List<T extends Object> implements Collection<T>{
 
     // Protected Methods
 
+    /* Returns the node present at the given index
+        @returns A Node of type T, or null if the index is out of bounds
+     */
     protected Node<T> getNode(int index){
 
         if (index < 0 || index >= this.size()){
@@ -342,6 +386,11 @@ public class List<T extends Object> implements Collection<T>{
 
     // Public Methods
 
+    /* Returns the element present at the given index
+        @returns An object of type T
+        @throws IndexOutOfBoundsException if the given index is invalid
+        @throws NullPointerException if the Node present at the given index is null
+     */
     public T get(int index){
 
         if (index < 0 || index >= this.size()){
@@ -360,6 +409,11 @@ public class List<T extends Object> implements Collection<T>{
 
     }
 
+    /* Changes a given index to the given value
+        @returns true if the operation was successfull
+        @throws IndexOutOfBoundsException if the given index is invalid
+        @throws NullPointerException if the Node present at the given index is null
+     */
     public boolean set(int index, T value){
 
         if (index >= this.size() || index < 0){
@@ -382,6 +436,10 @@ public class List<T extends Object> implements Collection<T>{
 
     }
 
+    /* Removes the node at the given index
+        @throws IndexOutOfBoundsException if the given index is invalid
+        @throws NullPointerException if the Node present at the given index is null
+     */
     public void removeIndex(int index){
 
         if (index >= this.size() || index < 0){
@@ -419,6 +477,11 @@ public class List<T extends Object> implements Collection<T>{
 
     }
 
+    /* Creates a new node at the given index with the given value
+        @returns true if the operation was successfull
+        @throws IndexOutOfBoundsException if the given index is invalid
+        @throws OperationNotSupportedException if addition in arbitrary indices is not allowed
+     */
     public boolean add(int index, T value) throws OperationNotSupportedException{
 
         if (this.isEmpty() && index == 0){

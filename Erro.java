@@ -9,7 +9,6 @@ public class Erro{
         "Erro: Lista Voltar vazia",             //5
         "Erro: Este site ja foi favoritado",    //6
         "Erro: URL invalida",                   //7
-        "Erro: Nao existe URL atual",           //8
-
+        "Erro: Nao existe URL atual"            //8
     };
 }

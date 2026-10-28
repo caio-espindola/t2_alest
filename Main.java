@@ -28,6 +28,10 @@ public class Main{
         }
     }
 
+    /* Receives commands from stdin and splits them by space, calling the respective functions
+        @returns A string reporting success or failure in the operations
+        @throws Any uncaught exceptions are passed on to be caught by main()
+     */
     private static String prompt() throws Exception {
 
         String result;
@@ -80,7 +84,12 @@ public class Main{
         return result;
     }
 
-    private static String visitar(String url) throws Exception {
+    /* Adds an url to the return stack
+        @param url A string representing a website
+        @returns Operation result
+        @throws OperationNotSupportedException due to requirement from Deck.add(int, T)
+     */
+    private static String visitar(String url) throws OperationNotSupportedException {
 
         if (url.equals("")){
             return Erro.e[7];
@@ -104,6 +113,10 @@ public class Main{
 
     }
 
+    /* Removes the last element from the return stack
+        @returns Operation result
+        @throws OperationNotSupportedException due to requirement from Deck.add(int, T)
+     */
     private static String voltar() throws OperationNotSupportedException{
 
         try {
@@ -128,6 +141,10 @@ public class Main{
 
     }
 
+    /* Moves the last element of the forward stack to the return stack
+        @returns Operation result
+        @throws OperationNotSupportedException due to requirement from Deck.add(int, T)
+     */
     private static String avancar() throws OperationNotSupportedException{
 
         try {
@@ -144,6 +161,9 @@ public class Main{
 
     }
 
+    /* Retrieves the last element in the return stack
+        @returns The current website
+     */
     private static String atual(){
 
         if (return_stack.isEmpty()) {
@@ -154,6 +174,9 @@ public class Main{
 
     }
 
+    /* Concatenates all elements from the history list into a string
+        @returns The history list
+     */
     private static String historico(){
 
         if (history.isEmpty()) {
@@ -170,6 +193,10 @@ public class Main{
 
     }
 
+    /* Adds a website into the favorites list
+        @param url A website URL
+        @returns Operation result
+     */
     private static String favoritar(String url){
 
         if (url.equals("")){
@@ -200,6 +227,9 @@ public class Main{
 
     }
 
+    /* Concatenates all elements from the favorites list into a string
+        @returns The favorite list
+     */
     private static String favoritos(){
 
         if (favorites.isEmpty()){

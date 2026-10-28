@@ -1,4 +1,3 @@
-
 import javax.naming.OperationNotSupportedException;
 
 public class Deck<T> extends List<T> {
@@ -12,10 +11,17 @@ public class Deck<T> extends List<T> {
     }
 
     @Override
+    /* Addition to arbitraty positions in the collection is not allowed for this type
+        @throws OperationNotSupportedException
+     */
     public boolean add(int index, T value) throws OperationNotSupportedException{
         throw new OperationNotSupportedException();
     }
 
+
+    /* Adds the given element to the start of the deck
+        @returns The element removed from the other side, if necessary
+     */
     public T addFirst(T value) throws OperationNotSupportedException{
 
         if (this.size() == this.max_size){
@@ -32,6 +38,9 @@ public class Deck<T> extends List<T> {
 
     }
 
+    /* Adds the given element to the end of the deck
+        @returns The element removed from the other side, if necessary
+     */
     public T addLast(T value) throws OperationNotSupportedException{
 
         if (this.size() == this.max_size){
@@ -48,6 +57,8 @@ public class Deck<T> extends List<T> {
 
     }
 
+    /* Removes the first element and returns it
+     */
     public T removeFirst(){
 
         T removed = this.getFirst();
@@ -56,6 +67,8 @@ public class Deck<T> extends List<T> {
 
     }
 
+    /* Removes the last element and returns it
+     */
     public T removeLast(){
 
         T removed = this.getLast();
@@ -64,6 +77,9 @@ public class Deck<T> extends List<T> {
 
     }
 
+    /* Returns the first element in this list
+        @throws NullPointerException if the list is empty or the first element is null
+     */
     public T getFirst(){
 
         if (this.head == null){
@@ -74,6 +90,9 @@ public class Deck<T> extends List<T> {
 
     }
 
+    /* Returns the last element in this list
+        @throws NullPointerException if the list is empty or the last element is null
+     */
     public T getLast(){
 
         if (this.tail == null){

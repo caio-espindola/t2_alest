@@ -1,5 +1,7 @@
 public class ExclusiveList<T extends Object> extends List<T>{
 
+    // Same thing as List, but returns false in all additions if the element is already present
+
     @Override
     public boolean set(int index, T value){
 
